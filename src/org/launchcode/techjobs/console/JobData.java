@@ -21,7 +21,7 @@ public class JobData {
 
     private static ArrayList<HashMap<String, String>> allJobs;
 
-    /**
+    /**9
      * Fetch list of all values from loaded data,
      * without duplicates, for a given column.
      *
@@ -76,13 +76,30 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.matches("(?i:.*" + value +".*)")){
                 jobs.add(row);
             }
         }
 
         return jobs;
     }
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        for (HashMap<String, String> row : allJobs){
+            for (String column : row.keySet()){
+                String aValue = row.get(column);
+                if (aValue.matches("(?i:.*" + value +".*)")){
+                    if (!jobs.contains(row)) {
+                        jobs.add(row);
+                    }
+                }
+            }
+        }
+        return jobs;
+    }
+
 
     /**
      * Read in data from a CSV file and store it in a list
